@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VR1 — Digital Growth & Web Studio</title>
+  <meta name="description"
+    content="VR1 is a digital studio that builds modern websites and growth-focused digital experiences for businesses, brands, and ambitious people.">
+  <meta property="og:title" content="VR1 — We Are One">
+  <meta property="og:description" content="We build digital experiences that move businesses forward.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="/vr1-mark.svg" type="image/svg+xml">
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- GSAP & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <!-- Lenis for smooth scrolling -->
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+  <!-- VR1 LOADER -->
+  <div id="vr1-loader" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #080808; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 1s ease-out;">
+    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+      <div class="loader-dot" style="width: 8px; height: 8px; background: #22C55E; border-radius: 50%; opacity: 0; transform: translateX(-20px);"></div>
+      <div class="loader-line" style="width: 0px; height: 1px; background: rgba(34, 197, 94, 0.5);"></div>
+      <div class="loader-dot" style="width: 8px; height: 8px; background: #22C55E; border-radius: 50%; opacity: 0; transform: translateX(20px);"></div>
+    </div>
+    <div class="loader-text" style="color: #fff; font-size: 14px; letter-spacing: 4px; opacity: 0; font-weight: 500;">WE ARE ONE</div>
+  </div>
+
+  <!-- PERSISTENT WEBGL CANVAS -->
+  <canvas id="vr1-webgl" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none;"></canvas>
+
+  <div id="main-content" style="position: relative; z-index: 1;">
+
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor" id="cursor">
+    <div class="cursor-ring" id="cursorRing"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-label" id="cursorLabel">VIEW</div>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#services" onclick="closeMobile()">Services</a>
+    <a href="#work" onclick="closeMobile()">Work</a>
+    <a href="#about" onclick="closeMobile()">About</a>
+    <a href="#team" onclick="closeMobile()">Team</a>
+    <a href="#updates" onclick="closeMobile()">Updates</a>
+    <a href="#contact" onclick="closeMobile()">Contact</a>
+    <a href="#contact" class="m-cta" onclick="closeMobile()">Start a Project</a>
+  </div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="nav-logo" aria-label="VR1 home">
+      <img src="/logo.png" alt="VR1 — We Are One" width="480" height="220">
+    </a>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#team">Team</a>
+      <a href="#updates">Updates</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-right">
+      <a href="#contact" class="nav-cta">Start a Project</a>
+      <div class="hamburger" id="hamburger" onclick="toggleMobile()">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-grid"></div>
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-content">
+      <div class="hero-text-wrapper" style="max-width: 600px; text-align: left;">
+        <div class="hero-tag" style="justify-content: flex-start;"><span class="dot"></span>Digital Growth & Web Studio</div>
+        <h1 style="text-align: left; font-size: 4rem; line-height: 1.1; margin-bottom: 24px;">VR1<br>We build digital<br>experiences that<br><em>move businesses</em><br>forward.</h1>
+        <p class="hero-sub" style="text-align: left; max-width: 500px; margin: 0 0 40px 0;">VR1 creates modern websites, digital experiences, and growth-focused ideas for businesses,
+          brands, and ambitious people.</p>
+        <div class="hero-actions" style="justify-content: flex-start;">
+          <a href="#contact" class="btn-primary">Start a Project <span>→</span></a>
+          <a href="#work" class="btn-secondary">Explore Our Work <span>↓</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item">Web Development</span>
+      <span class="marquee-item">UI/UX Design</span>
+      <span class="marquee-item">Digital Strategy</span>
+      <span class="marquee-item">SEO & Visibility</span>
+      <span class="marquee-item">Website Redesign</span>
+      <span class="marquee-item">Growth Ideas</span>
+      <span class="marquee-item">We Are One</span>
+      <span class="marquee-item">Web Development</span>
+      <span class="marquee-item">UI/UX Design</span>
+      <span class="marquee-item">Digital Strategy</span>
+      <span class="marquee-item">SEO & Visibility</span>
+      <span class="marquee-item">Website Redesign</span>
+      <span class="marquee-item">Growth Ideas</span>
+      <span class="marquee-item">We Are One</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="services-section" id="services">
+    <div class="container">
+      <div class="services-header reveal">
+        <div>
+          <div class="section-label">What We Do</div>
+          <h2 class="section-title">Services built around<br>your business goals.</h2>
+        </div>
+        <p class="section-sub">Every service is customized around what your business actually needs — not a
+          one-size-fits-all template.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal reveal-delay-1" data-hover>
+          <span class="service-num">01</span>
+          <span class="service-icon">🌐</span>
+          <h3>Web Development</h3>
+          <p>Fast, responsive, modern websites built around the client's goals. Performance-first, always.</p>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-card reveal reveal-delay-2" data-hover>
+          <span class="service-num">02</span>
+          <span class="service-icon">✦</span>
+          <h3>UI/UX Design</h3>
+          <p>Clean, intuitive, and engaging digital experiences that people actually enjoy using.</p>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-card reveal reveal-delay-3" data-hover>
+          <span class="service-num">03</span>
+          <span class="service-icon">⟳</span>
+          <h3>Website Redesign</h3>
+          <p>Transform outdated websites into modern, effective digital experiences that represent your brand.</p>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-card reveal reveal-delay-4" data-hover>
+          <span class="service-num">04</span>
+          <span class="service-icon">💡</span>
+          <h3>Digital Growth Ideas</h3>
+          <p>We identify ideas and opportunities to improve your digital presence and move your business forward.</p>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-card reveal reveal-delay-1" data-hover>
+          <span class="service-num">05</span>
+          <span class="service-icon">🔍</span>
+          <h3>SEO & Visibility</h3>
+          <p>Help your business become easier to discover online. The right audience at the right time.</p>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-card reveal reveal-delay-2" data-hover>
+          <span class="service-num">06</span>
+          <span class="service-icon">⬡</span>
+          <h3>Digital Strategy</h3>
+          <p>Think beyond just the website. Create a stronger, unified digital direction for your business.</p>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-card reveal reveal-delay-3" data-hover>
+          <span class="service-num">07</span>
+          <span class="service-icon">⚙</span>
+          <h3>Maintenance & Support</h3>
+          <p>Continue improving and maintaining your website after launch. We stay with you.</p>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-card reveal reveal-delay-4" data-hover>
+          <span class="service-num">08</span>
+          <span class="service-icon">◈</span>
+          <h3>Custom Solutions</h3>
+          <p>Unique problem? VR1 creates a custom digital solution built specifically for your situation.</p>
+          <div class="service-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY VR1 -->
+  <section id="about">
+    <div class="container">
+      <div class="why-grid">
+        <div class="why-intro reveal">
+          <div class="section-label">Why VR1</div>
+          <h2 class="section-title">We think beyond<br>the website.</h2>
+          <p class="section-sub" style="margin-top:16px;">VR1 was built on a simple principle: digital projects shouldn't feel fragmented. We unite strategy, design, and high-performance engineering into a single cohesive system.</p>
+        </div>
+        <div>
+          <div class="why-list">
+            <div class="why-item reveal reveal-delay-1">
+              <span class="why-num">01</span>
+              <div>
+                <h4>We Think Beyond Websites</h4>
+                <p>We don't just build a website. We think about what it should accomplish for your business — and design toward that goal.</p>
+              </div>
+            </div>
+            <div class="why-item reveal reveal-delay-2">
+              <span class="why-num">02</span>
+              <div>
+                <h4>Built Around the Client</h4>
+                <p>Every project is customized around your goals, your audience, and your business. Not a template, not a formula.</p>
+              </div>
+            </div>
+            <div class="why-item reveal reveal-delay-3">
+              <span class="why-num">03</span>
+              <div>
+                <h4>Two People. One Vision.</h4>
+                <p>VR1 means We Are One. Two people working as a single team — fully focused on your project.</p>
+              </div>
+            </div>
+            <div class="why-item reveal reveal-delay-4">
+              <span class="why-num">04</span>
+              <div>
+                <h4>Growth Mindset</h4>
+                <p>The goal isn't just to launch a website. The goal is to create something that helps your business move forward.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WE ARE ONE (PINNED SIGNATURE SCROLL EXPERIENCE) -->
+  <section class="union-section" id="unionSection">
+    <div class="union-pinned-wrapper">
+      <div class="union-content-overlay">
+        <div class="union-stage-badge" id="unionStageBadge">01 / TWO</div>
+        <h2 class="union-stage-heading" id="unionStageHeading">Two distinct forces.</h2>
+        <p class="union-stage-desc" id="unionStageDesc">Independent perspectives built around a shared standard.</p>
+        
+        <div class="union-final-reveal" id="unionFinalReveal">
+          <div class="union-brand-title">VR<span class="green-accent">1</span></div>
+          <div class="union-brand-tag">WE ARE ONE</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process-section">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">Our Process</div>
+        <h2 class="section-title">How we work<br>with you.</h2>
+      </div>
+      <div class="process-track">
+        <div class="process-step reveal reveal-delay-1">
+          <span class="step-num">01</span>
+          <h4>Discover</h4>
+          <p>Understand your business, your problem, and your goals before anything else.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-2">
+          <span class="step-num">02</span>
+          <h4>Plan</h4>
+          <p>Develop the website and digital strategy with clear priorities and timelines.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-3">
+          <span class="step-num">03</span>
+          <h4>Design</h4>
+          <p>Create the visual and user experience with your audience in mind.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-1">
+          <span class="step-num">04</span>
+          <h4>Build</h4>
+          <p>Develop the website with clean, maintainable code and modern technologies.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-2">
+          <span class="step-num">05</span>
+          <h4>Launch</h4>
+          <p>Deploy and optimize the final product. On time, tested, ready to go.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-3">
+          <span class="step-num">06</span>
+          <h4>Grow</h4>
+          <p>Continue improving the digital experience based on results and feedback.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM SECTION -->
+  <section class="problem-section">
+    <div class="container">
+      <div class="reveal" style="text-align:center; max-width:640px; margin:0 auto 60px">
+        <div class="section-label">Sound familiar?</div>
+        <h2 class="section-title">Your business is already doing the work. Is your digital presence keeping up?</h2>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-list reveal">
+          <div class="problem-item"><span class="p-icon">×</span> Outdated website that doesn't reflect your brand</div>
+          <div class="problem-item"><span class="p-icon">×</span> No website at all — no digital presence</div>
+          <div class="problem-item"><span class="p-icon">×</span> Poor mobile experience losing customers</div>
+          <div class="problem-item"><span class="p-icon">×</span> Difficult navigation, visitors leave quickly</div>
+          <div class="problem-item"><span class="p-icon">×</span> Weak online presence — hard to find</div>
+          <div class="problem-item"><span class="p-icon">×</span> Website doesn't convert visitors into customers</div>
+          <div class="problem-item"><span class="p-icon">×</span> No clear brand identity or visual direction</div>
+          <div class="problem-item"><span class="p-icon">×</span> Customers can't easily find information</div>
+        </div>
+        <div class="solution-side reveal reveal-delay-2">
+          <p class="section-label">VR1 fixes this</p>
+          <p class="solution-intro">We turn digital <em>problems</em> into growth <em>opportunities.</em></p>
+          <p class="solution-desc">Every problem above is a project we can help solve. VR1 is built specifically to help
+            businesses like yours get the digital presence they deserve — modern, effective, and built around your
+            goals.</p>
+          <a href="#contact" class="btn-primary" style="width:fit-content">Let's Fix It →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK / PROJECTS -->
+  <section class="work-section" id="work">
+    <div class="container">
+      <div class="work-header">
+        <div class="reveal">
+          <div class="section-label">Our Work</div>
+          <h2 class="section-title">Projects that speak<br>for themselves.</h2>
+        </div>
+        <p class="section-sub reveal">Early-stage projects and experiments. Real client work coming soon.</p>
+      </div>
+      <div class="work-grid">
+
+        <!-- ==========================================
+           PLACEHOLDER PROJECT 1
+           Replace: title, description, image, links
+           ========================================== -->
+        <div class="project-card reveal reveal-delay-1" data-project>
+          <div class="project-img">
+            <div class="project-img-inner" style="background:linear-gradient(135deg,#0f1a0f,#1a2e1a);">🌐</div>
+            <div class="project-placeholder-badge">Demo Project</div>
+          </div>
+          <div class="project-info">
+            <div class="project-cats">
+              <span class="cat-badge">Web Development</span>
+              <span class="cat-badge">UI/UX</span>
+            </div>
+            <h3>[PROJECT 1 NAME]</h3>
+            <p class="project-desc">A modern business website built with performance and clarity in mind. Placeholder —
+              replace with real project details.</p>
+            <div class="project-tech">
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">Node.js</span>
+              <span class="tech-tag">CSS</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="proj-link primary-link">View Project →</a>
+              <a href="#" class="proj-link">GitHub</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PLACEHOLDER PROJECT 2 -->
+        <div class="project-card reveal reveal-delay-2" data-project>
+          <div class="project-img">
+            <div class="project-img-inner" style="background:linear-gradient(135deg,#0a0f1a,#101a2e);">✦</div>
+            <div class="project-placeholder-badge">Demo Project</div>
+          </div>
+          <div class="project-info">
+            <div class="project-cats">
+              <span class="cat-badge">UI/UX</span>
+              <span class="cat-badge">Personal Brand</span>
+            </div>
+            <h3>[PROJECT 2 NAME]</h3>
+            <p class="project-desc">A personal brand website with a distinctive visual identity. Placeholder — replace
+              with real project details.</p>
+            <div class="project-tech">
+              <span class="tech-tag">HTML</span>
+              <span class="tech-tag">CSS</span>
+              <span class="tech-tag">JavaScript</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="proj-link primary-link">View Project →</a>
+              <a href="#" class="proj-link">GitHub</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PLACEHOLDER PROJECT 3 -->
+        <div class="project-card reveal reveal-delay-3" data-project>
+          <div class="project-img">
+            <div class="project-img-inner" style="background:linear-gradient(135deg,#1a0a0a,#2e1010);">🛒</div>
+            <div class="project-placeholder-badge">Demo Project</div>
+          </div>
+          <div class="project-info">
+            <div class="project-cats">
+              <span class="cat-badge">E-Commerce</span>
+            </div>
+            <h3>[PROJECT 3 NAME]</h3>
+            <p class="project-desc">An e-commerce experience built around the customer journey. Placeholder — replace
+              with real project details.</p>
+            <div class="project-tech">
+              <span class="tech-tag">Next.js</span>
+              <span class="tech-tag">Tailwind</span>
+              <span class="tech-tag">API</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="proj-link primary-link">View Project →</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="view-all-wrap reveal">
+        <a href="#" class="btn-secondary">View All Projects →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <div class="cta-band reveal">
+    <div class="container">
+      <h2>Ready to build something?</h2>
+      <p>We'd love to hear about your project and what you're trying to achieve.</p>
+      <a href="#contact" class="btn-primary">Start a Conversation →</a>
+    </div>
+  </div>
+
+  <!-- TEAM -->
+  <section class="team-section" id="team">
+    <div class="container">
+      <div class="team-intro reveal">
+        <div class="section-label">The Team</div>
+        <h2 class="section-title">Two members. One vision. VR1.</h2>
+        <p class="section-sub" style="margin:0 auto">A small, focused team means you get our full attention — every
+          project gets the best we have.</p>
+      </div>
+      <div class="team-grid">
+
+        <!-- ==========================================
+           MEMBER 1 — Replace all [MEMBER 1 *] placeholders
+           ========================================== -->
+        <div class="team-card reveal reveal-delay-1">
+          <div class="team-avatar-wrap">SD</div>
+          <div class="team-name">Sai Deva Harrsha</div>
+          <div class="team-role">Co-Founder &amp; Full-Stack Engineer</div>
+          <p class="team-bio">I’m a software engineer and Co-Founder of VR1, focused on building reliable web applications, backend systems, and interactive digital experiences. Through six months of internship experience and personal projects, I’ve worked across Java, Python, JavaScript, Spring Boot, Node.js, SQL databases, and AI/ML-related technologies. I enjoy turning complex ideas into practical, scalable products.</p>
+          <div class="team-skills">
+            <span class="skill-tag">Java</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">Spring Boot</span>
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">Express.js</span>
+            <span class="skill-tag">REST APIs</span>
+            <span class="skill-tag">PostgreSQL</span>
+            <span class="skill-tag">MySQL</span>
+            <span class="skill-tag">AI/ML</span>
+            <span class="skill-tag">Three.js</span>
+            <span class="skill-tag">WebGL</span>
+            <span class="skill-tag">GSAP</span>
+            <span class="skill-tag">Git</span>
+            <span class="skill-tag">Backend Architecture</span>
+          </div>
+          <div class="team-links">
+            <a href="https://github.com/deva00782" class="team-link" target="_blank">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.49 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58C20.56 21.8 24 17.3 24 12 24 5.37 18.63 0 12 0z" />
+              </svg>
+              GitHub
+            </a>
+            <a href="https://canva.link/pz6uxgtho53atbz" class="team-link" target="_blank">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+              Resume
+            </a>
+            <a href="https://www.linkedin.com/in/sai-devaharrsha-028517326" class="team-link" target="_blank">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+              LinkedIn
+            </a>
+          </div>
+        </div>
+
+        <!-- ==========================================
+           MEMBER 2 — Replace all [MEMBER 2 *] placeholders
+           ========================================== -->
+        <div class="team-card reveal reveal-delay-2">
+          <div class="team-avatar-wrap" style="background:linear-gradient(135deg,var(--raised),#1a2e1a);">AS</div>
+          <div class="team-name">E Ankit Kumar Singh</div>
+          <div class="team-role">Founder &amp; Full Stack Developer</div>
+          <p class="team-bio">Self-taught full-stack developer passionate about building clean, performant web applications. Currently doing an internship at LLC SUCCED INTERNATIONAL LIVE PROJECT and expanding into AI/ML, with a focus on thoughtful architecture and solving real problems through code.</p>
+          <div class="team-skills">
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">React.js</span>
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">Express.js</span>
+            <span class="skill-tag">MongoDB</span>
+            <span class="skill-tag">HTML</span>
+            <span class="skill-tag">CSS</span>
+            <span class="skill-tag">Java</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">AI/ML</span>
+            <span class="skill-tag">Git</span>
+          </div>
+          <div class="team-links">
+            <a href="https://github.com/ankitanmol26" class="team-link" target="_blank">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.49 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58C20.56 21.8 24 17.3 24 12 24 5.37 18.63 0 12 0z" />
+              </svg>
+              GitHub
+            </a>
+            <a href="https://ankit-protfolio-sandy.vercel.app" class="team-link" target="_blank">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+              Portfolio
+            </a>
+            <a href="https://docs.google.com/document/d/1IPhbeZl6hBKN9gtF20BgD0KPjbNHPrZ7/edit?usp=drive_link&amp;ouid=104565927008434950691&amp;rtpof=true&amp;sd=true" class="team-link" target="_blank">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+              Resume
+            </a>
+            <a href="https://www.linkedin.com/in/ankit-kumar-singh-026b16326/" class="team-link" target="_blank">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+              LinkedIn
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STUDIO UPDATES / NEWS -->
+  <section class="updates-section" id="updates" style="padding: 100px 0; border-top: 1px solid var(--border);">
+    <div class="container">
+      <div class="updates-header reveal" style="margin-bottom: 48px; text-align: center;">
+        <div class="section-label">Studio News</div>
+        <h2 class="section-title">Latest Updates &amp; Announcements</h2>
+        <p class="section-sub" style="margin: 12px auto 0; max-width: 540px;">Manual updates, product features, and project highlights managed live from the VR1 Admin Dashboard.</p>
+      </div>
+      <div class="updates-grid" id="updates-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+        <div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);">
+          <p>Loading latest updates…</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-left reveal">
+          <h2>Have an idea?<br><em>Let's build it.</em></h2>
+          <p>Tell us about your project. We'll get back to you quickly and tell you honestly if and how VR1 can help.
+          </p>
+          <div class="contact-details">
+            <div class="contact-detail">
+              <div class="c-icon">✉</div>
+              <a href="mailto:ksdhgsaidevaharsha6677@gmail.com">ksdhgsaidevaharsha6677@gmail.com</a>
+            </div>
+            <div class="contact-detail">
+              <div class="c-icon">✉</div>
+              <a href="mailto:ankitanmol26@gmail.com">ankitanmol26@gmail.com</a>
+            </div>
+            <div class="contact-detail">
+              <div class="c-icon">💬</div>
+              <a href="https://wa.me/[WHATSAPP]" target="_blank">WhatsApp: [WHATSAPP]</a>
+            </div>
+            <div class="contact-detail">
+              <div class="c-icon">📱</div>
+              <a href="tel:[PHONE]">[PHONE]</a>
+            </div>
+            <div class="contact-detail">
+              <div class="c-icon">📸</div>
+              <a href="https://instagram.com/[INSTAGRAM]" target="_blank">@[INSTAGRAM]</a>
+            </div>
+            <div class="contact-detail">
+              <div class="c-icon">in</div>
+              <a href="https://linkedin.com/company/[LINKEDIN]" target="_blank">[LINKEDIN]</a>
+            </div>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <div id="contactFormWrap">
+            <p class="section-label" style="margin-bottom:16px">What are we building?</p>
+            <div class="project-types" id="projectTypes">
+              <button class="type-btn" onclick="selectType(this)">Website</button>
+              <button class="type-btn" onclick="selectType(this)">Redesign</button>
+              <button class="type-btn" onclick="selectType(this)">E-Commerce</button>
+              <button class="type-btn" onclick="selectType(this)">Strategy</button>
+              <button class="type-btn" onclick="selectType(this)">Something new</button>
+            </div>
+            <form class="contact-form" onsubmit="handleSubmit(event)">
+              <div class="form-row">
+                <div class="form-field">
+                  <label>Name</label>
+                  <input type="text" placeholder="Your name" required>
+                </div>
+                <div class="form-field">
+                  <label>Email</label>
+                  <input type="email" placeholder="your@email.com" required>
+                </div>
+              </div>
+              <div class="form-field">
+                <label>Business / Company</label>
+                <input type="text" placeholder="Your business name">
+              </div>
+              <div class="form-field">
+                <label>Budget Range</label>
+                <select>
+                  <option value="" disabled selected>Select a range (optional)</option>
+                  <option>Under $500</option>
+                  <option>$500 – $1,000</option>
+                  <option>$1,000 – $3,000</option>
+                  <option>$3,000 – $5,000</option>
+                  <option>$5,000+</option>
+                  <option>Let's discuss</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Tell us about your project</label>
+                <textarea placeholder="Describe what you need and what you're trying to achieve..." required></textarea>
+              </div>
+              <button type="submit" class="form-submit">Send Message <span>→</span></button>
+            </form>
+          </div>
+          <div class="form-success" id="formSuccess">
+            <div class="success-icon">✓</div>
+            <h3>Message received.</h3>
+            <p>Let's build something. We'll be in touch soon.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo footer-logo" aria-label="VR1 home">
+          <img src="/logo.png" alt="VR1 — We Are One" width="480" height="220">
+        </a>
+        <p>A digital studio that builds modern websites and thinks of better digital ideas for businesses.</p>
+        <div class="footer-tagline">We Are One.</div>
+      </div>
+      <div class="footer-col">
+        <h5>Navigate</h5>
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#team">Team</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <a href="#services">Web Development</a>
+        <a href="#services">UI/UX Design</a>
+        <a href="#services">Redesign</a>
+        <a href="#services">Digital Strategy</a>
+        <a href="#services">SEO</a>
+        <a href="#services">Maintenance</a>
+      </div>
+      <div class="footer-col">
+        <h5>Connect</h5>
+        <a href="mailto:ksdhgsaidevaharsha6677@gmail.com">Email (Harrsha)</a>
+        <a href="mailto:ankitanmol26@gmail.com">Email (Ankit)</a>
+        <a href="https://wa.me/[WHATSAPP]" target="_blank">WhatsApp</a>
+        <a href="https://instagram.com/[INSTAGRAM]" target="_blank">Instagram</a>
+        <a href="https://linkedin.com/company/[LINKEDIN]" target="_blank">LinkedIn</a>
+        <a href="https://github.com/[GITHUB]" target="_blank">GitHub</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 VR1 Digital Studio. All rights reserved.</p>
+      <div>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  </div> <!-- end #main-content -->
+  <script src="/js/main.js" defer></script>
+  <script src="/js/vr1-system.js" defer></script>
+</body>
+
+</html>
