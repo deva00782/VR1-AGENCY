@@ -133,11 +133,113 @@ async function seed() {
     console.log(`  Blog_posts table already has ${blogCount} row(s) — skipping placeholder seed.`);
   }
 
+  // ── Pricing placeholders ───────────────────────────────────────────────────────
+  
+  // Settings
+  const { rows: [{ count: settingsCount }] } = await db.query('SELECT COUNT(*) AS count FROM pricing_settings');
+  if (parseInt(settingsCount, 10) === 0) {
+    await db.query(`
+      INSERT INTO pricing_settings (hero_title, hero_subtitle, cta_text, cta_link, bottom_cta_title, bottom_cta_text, bottom_cta_link)
+      VALUES (
+        'Simple, Transparent Website Pricing',
+        'Choose the level of website your business needs. Every project is planned around your goals, features and requirements.',
+        'Start Your Project',
+        '/contact.html',
+        'Don''t see what you need?',
+        'Every business is different. If you need a custom website, booking system, customer portal, CRM, automation or another custom solution, tell us what you''re looking for.',
+        '/contact.html'
+      )
+    `);
+    console.log('✓ Pricing settings seeded.');
+  }
+
+  // Plans
+  const { rows: [{ count: plansCount }] } = await db.query('SELECT COUNT(*) AS count FROM pricing_plans');
+  if (parseInt(plansCount, 10) === 0) {
+    await db.query(`
+      INSERT INTO pricing_plans (name, price, price_suffix, description, features, is_popular, sort_order) VALUES
+      ('Starter Website', '₹12,999', '', 'For businesses that need a professional online presence.', ARRAY['Up to 5 pages', 'Responsive design', 'Home, About, Services & Contact', 'WhatsApp integration', 'Google Maps integration', 'Contact form', 'Social media integration', 'Basic SEO', 'SSL', 'Deployment', '7 days support'], false, 1),
+      ('Business Website', '₹24,999', '', 'For growing businesses that need a stronger online presence.', ARRAY['Up to 10 pages', 'Premium UI/UX', 'Services / Products', 'Testimonials', 'Gallery', 'FAQ', 'Lead enquiry forms', 'WhatsApp integration', 'Click-to-call', 'Google Business integration', 'Advanced SEO', 'Analytics', 'Performance optimization', 'Basic content management', '30 days support'], true, 2),
+      ('Professional CMS Website', '₹39,999', '', 'For businesses that want complete control over their website.', ARRAY['Custom professional UI/UX', 'Secure admin login', 'Admin dashboard', 'Content management system', 'Service / Product management', 'Gallery management', 'Testimonials management', 'Team management', 'Offers / Promotions', 'FAQ management', 'Blog management', 'Enquiry management', 'Image uploads', 'Database', 'SEO management', 'Custom content sections', '60 days support'], false, 3),
+      ('Custom Website / Web Application', 'Starting at ₹59,999', '', 'For businesses requiring custom functionality and advanced systems.', ARRAY['Custom UI/UX', 'Advanced admin dashboard', 'Authentication', 'Customer dashboards', 'Staff dashboards', 'Online booking', 'Payment integration', 'CRM functionality', 'Lead management', 'Automation', 'Third-party APIs', 'Advanced database functionality', 'Custom workflows', 'Analytics', 'Custom integrations'], false, 4)
+    `);
+    console.log('✓ Pricing plans seeded.');
+  }
+
+  // Factors
+  const { rows: [{ count: factorsCount }] } = await db.query('SELECT COUNT(*) AS count FROM pricing_factors');
+  if (parseInt(factorsCount, 10) === 0) {
+    await db.query(`
+      INSERT INTO pricing_factors (title, description, icon, sort_order) VALUES
+      ('Number of Pages', 'More pages require more design, content structure and development.', 'fa-regular fa-file-lines', 1),
+      ('Design Complexity', 'Basic business websites cost less than highly customized interactive experiences.', 'fa-solid fa-pen-nib', 2),
+      ('Admin Panel', 'If the client wants to manage content themselves, a CMS/admin system adds development work.', 'fa-solid fa-sliders', 3),
+      ('Database', 'Dynamic websites that store and manage information require database functionality.', 'fa-solid fa-database', 4),
+      ('Booking System', 'Online appointments, availability and booking workflows increase project complexity.', 'fa-regular fa-calendar-check', 5),
+      ('Payments', 'Payment gateways and transaction workflows require additional integration and testing.', 'fa-solid fa-credit-card', 6),
+      ('Custom Features', 'Special functionality, dashboards, automation and integrations increase development time.', 'fa-solid fa-code', 7),
+      ('Support & Maintenance', 'Ongoing updates, monitoring and technical support can be purchased separately.', 'fa-solid fa-headset', 8)
+    `);
+    console.log('✓ Pricing factors seeded.');
+  }
+
+  // Addons
+  const { rows: [{ count: addonsCount }] } = await db.query('SELECT COUNT(*) AS count FROM pricing_addons');
+  if (parseInt(addonsCount, 10) === 0) {
+    await db.query(`
+      INSERT INTO pricing_addons (name, price, description, sort_order) VALUES
+      ('Additional Page', '₹1,500+', '', 1),
+      ('Advanced Landing Page', '₹3,000+', '', 2),
+      ('CMS / Admin Module', '₹5,000+', '', 3),
+      ('Online Booking', '₹8,000+', '', 4),
+      ('Payment Gateway', '₹5,000+', '', 5),
+      ('Blog System', '₹5,000+', '', 6),
+      ('Advanced Gallery', '₹3,000+', '', 7),
+      ('Lead Management', '₹2,500+', '', 8),
+      ('Third-party API Integration', '₹5,000+', '', 9),
+      ('WhatsApp Automation', '₹5,000+', '', 10),
+      ('Advanced SEO', '₹7,500+', '', 11),
+      ('Custom Feature', 'Get a Quote', '', 12)
+    `);
+    console.log('✓ Pricing addons seeded.');
+  }
+
+  // Maintenance Plans
+  const { rows: [{ count: maintenanceCount }] } = await db.query('SELECT COUNT(*) AS count FROM maintenance_plans');
+  if (parseInt(maintenanceCount, 10) === 0) {
+    await db.query(`
+      INSERT INTO maintenance_plans (name, price, billing_period, description, features, sort_order, is_popular, cta_text, cta_link) VALUES
+      ('Basic Care', '₹999', '/ month', 'For businesses that need basic website maintenance and technical support.', ARRAY['Website health checks', 'Basic security checks', 'Minor content updates', 'Text/content corrections', 'Basic image replacements', 'Technical support', 'Backup checks', 'Monthly maintenance review'], 1, false, 'Choose Basic Care', '/contact.html'),
+      ('Business Care', '₹1,999', '/ month', 'For growing businesses that want regular updates and reliable website support.', ARRAY['Everything in Basic Care', 'Regular website updates', 'Multiple content changes', 'Image and gallery updates', 'Service / product updates', 'Basic performance monitoring', 'Security monitoring', 'Backup management', 'Minor layout adjustments', 'Priority support'], 2, true, 'Choose Business Care', '/contact.html'),
+      ('Premium Care', '₹3,999', '/ month', 'For businesses that need priority support and ongoing website improvements.', ARRAY['Everything in Business Care', 'Priority technical support', 'Frequent content updates', 'Advanced website monitoring', 'Performance optimization', 'Security monitoring', 'Backup management', 'Minor feature improvements', 'Landing page/content updates', 'Monthly website review', 'Priority maintenance requests'], 3, false, 'Choose Premium Care', '/contact.html')
+    `);
+    console.log('✓ Maintenance plans seeded.');
+  }
+
+  // FAQs
+  const { rows: [{ count: faqCount }] } = await db.query('SELECT COUNT(*) AS count FROM pricing_faqs');
+  if (parseInt(faqCount, 10) === 0) {
+    await db.query(`
+      INSERT INTO pricing_faqs (question, answer, sort_order) VALUES
+      ('Why does website pricing vary?', 'Website pricing varies based on the number of pages, design complexity, functionality, and integrations required.', 1),
+      ('Is hosting included?', 'We can recommend hosting providers or include hosting in a custom quote, but it is typically a separate ongoing cost unless specified.', 2),
+      ('Is a domain included?', 'Domain names are usually purchased by the client to ensure ownership, but we can assist with the process.', 3),
+      ('Can I update my website myself?', 'Yes, if you choose a CMS (Content Management System) package, you will be able to update text, images, and other content yourself.', 4),
+      ('What is a CMS?', 'A CMS (Content Management System) is an admin panel that allows you to log in and manage your website content without needing to write code.', 5),
+      ('Can you add online booking later?', 'Absolutely! We build websites that can grow with your business. Features like booking or payments can be added in the future.', 6),
+      ('Can you add payment functionality later?', 'Yes, e-commerce and payment gateways can be integrated at any time.', 7),
+      ('Do you provide maintenance?', 'Yes, we offer ongoing maintenance and support plans to keep your website secure, fast, and up-to-date.', 8),
+      ('How long does a website take to build?', 'A simple starter website may take 1-2 weeks, while a complex custom web application can take several months. We provide clear timelines with every proposal.', 9),
+      ('What happens after the website is launched?', 'After launch, we provide a warranty period for bug fixes. You can also opt into one of our maintenance plans for ongoing support and updates.', 10)
+    `);
+    console.log('✓ Pricing FAQs seeded.');
+  }
+
   console.log('\nSeed complete. Run the server: npm run dev');
   process.exit(0);
 }
 
 seed().catch(err => {
-  console.error('Seed failed:', err.message);
+  console.error('Seed failed:', err);
   process.exit(1);
 });
