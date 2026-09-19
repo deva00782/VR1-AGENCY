@@ -47,6 +47,7 @@ const projectRoutes = require('./routes/projects');
 const teamRoutes    = require('./routes/team');
 const blogRoutes    = require('./routes/blog');
 const uploadRoutes  = require('./routes/upload');
+const pricingRoutes = require('./routes/pricing');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -122,6 +123,7 @@ app.use('/admin', helmet.contentSecurityPolicy({
 
 // ── Static: public website ────────────────────────────────────────────────────
 app.use(express.static(path.join(__dirname, '../frontend/public')));
+app.get('/pricing', (_req, res) => res.sendFile(path.join(__dirname, '../frontend/public', 'pricing.html')));
 
 // ── API routes ────────────────────────────────────────────────────────────────
 app.use('/api/auth',      authRoutes);
@@ -130,6 +132,7 @@ app.use('/api/projects',  projectRoutes);
 app.use('/api/team',      teamRoutes);
 app.use('/api/blog',      blogRoutes);
 app.use('/api/upload',    uploadRoutes);
+app.use('/api/pricing',   pricingRoutes);
 
 // ── Admin dashboard (static SPA; auth enforced by /api/auth/me on every load) ─
 app.use('/admin', express.static(path.join(__dirname, '../frontend/admin')));
@@ -146,4 +149,7 @@ app.use((err, _req, res, _next) => {
   res.status(status).json({ error: message });
 });
 
-app.listen(PORT, () => console.log(`VR1 server → http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`\n🚀 Server is running!`);
+  console.log(`🌐 URL: http://localhost:${PORT}\n`);
+});

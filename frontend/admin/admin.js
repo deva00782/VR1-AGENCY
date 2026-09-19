@@ -149,6 +149,7 @@ async function init() {
     loadProjects();
     loadTeam();
     loadBlog();
+    if(typeof loadPricing === 'function') loadPricing();
   } catch { showLogin(); }
 }
 
@@ -175,6 +176,7 @@ async function doLogin(e) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
     loadInquiries(); loadProjects(); loadTeam(); loadBlog();
+    if(typeof loadPricing === 'function') loadPricing();
   } catch (ex) {
     err.textContent = ex.message || 'Invalid credentials.';
     err.style.display = 'block';
