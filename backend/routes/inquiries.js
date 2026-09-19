@@ -8,9 +8,9 @@
 const router = require('express').Router();
 const { rateLimit } = require('express-rate-limit');
 const { body, param, validationResult } = require('express-validator');
-const db = require('../db');
-const { requireAuth } = require('../middleware/auth');
-const { csrfProtect } = require('../middleware/csrf');
+const db = require('../../db');
+const { requireAuth } = require('../../middleware/auth');
+const { csrfProtect } = require('../../middleware/csrf');
 const notionSync = require('../utils/notionSync');
 
 const VALID_STATUSES = ['NEW','CONTACTED','DISCUSSION','PROPOSAL','ACTIVE','COMPLETED'];

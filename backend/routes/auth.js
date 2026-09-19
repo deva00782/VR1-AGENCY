@@ -9,9 +9,9 @@ const bcrypt  = require('bcrypt');
 const jwt     = require('jsonwebtoken');
 const { rateLimit } = require('express-rate-limit');
 const { body, validationResult } = require('express-validator');
-const db      = require('../db');
-const { requireAuth }      = require('../middleware/auth');
-const { generateCsrfToken } = require('../middleware/csrf');
+const db      = require('../../db');
+const { requireAuth }      = require('../../middleware/auth');
+const { generateCsrfToken } = require('../../middleware/csrf');
 
 const isProd = process.env.NODE_ENV === 'production';
 

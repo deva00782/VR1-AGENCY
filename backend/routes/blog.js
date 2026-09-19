@@ -10,9 +10,9 @@
  */
 const router = require('express').Router();
 const { body, param, validationResult } = require('express-validator');
-const db = require('../db');
-const { requireAuth } = require('../middleware/auth');
-const { csrfProtect } = require('../middleware/csrf');
+const db = require('../../db');
+const { requireAuth } = require('../../middleware/auth');
+const { csrfProtect } = require('../../middleware/csrf');
 
 function slugify(text) {
   return String(text || '')
@@ -28,6 +28,7 @@ function optionalUrl(field) {
     .optional({ nullable: true })
     .custom(v => {
       if (v === null || v === undefined || v === '') return true;
+      if (typeof v === 'string' && v.startsWith('/')) return true;
       try { new URL(v); return true; } catch { throw new Error(`${field} must be a valid URL`); }
     });
 }

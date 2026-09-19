@@ -365,7 +365,13 @@ textarea.notes-area:focus{border-color:rgba(34,197,94,.5)}
       <div class="form-field"><label>Technologies (comma-separated)</label><input type="text" id="pf-tech" placeholder="React, Node.js, CSS"></div>
       <div class="form-field span2">
         <label>Image URL</label>
-        <input type="url" id="pf-img" placeholder="https://…" oninput="previewImage('pf-img','pf-img-prev')">
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+          <input type="url" id="pf-img" placeholder="https://..." oninput="previewImage('pf-img','pf-img-prev')" style="flex: 1;">
+          <label class="btn" style="cursor:pointer; margin:0; padding:10px 16px;">
+            Browse...
+            <input type="file" id="pf-img-file" accept="image/*" style="display:none;" onchange="uploadImage(this, 'pf-img')">
+          </label>
+        </div>
         <div id="pf-img-prev" style="margin-top:8px;height:90px;border-radius:6px;background:var(--raised);border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;overflow:hidden">
           <span>No image preview</span>
         </div>
@@ -405,7 +411,13 @@ textarea.notes-area:focus{border-color:rgba(34,197,94,.5)}
       <div class="form-field span2"><label>Skills (comma-separated)</label><input type="text" id="tm-skills" placeholder="React, Node.js, CSS, Git"></div>
       <div class="form-field span2">
         <label>Photo URL</label>
-        <input type="url" id="tm-photo" placeholder="https://…" oninput="previewImage('tm-photo','tm-photo-prev')">
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+          <input type="url" id="tm-photo" placeholder="https://..." oninput="previewImage('tm-photo','tm-photo-prev')" style="flex: 1;">
+          <label class="btn" style="cursor:pointer; margin:0; padding:10px 16px;">
+            Browse...
+            <input type="file" id="tm-photo-file" accept="image/*" style="display:none;" onchange="uploadImage(this, 'tm-photo')">
+          </label>
+        </div>
         <div id="tm-photo-prev" style="margin-top:8px;height:90px;border-radius:6px;background:var(--raised);border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;overflow:hidden">
           <span>No image preview</span>
         </div>
@@ -451,9 +463,14 @@ textarea.notes-area:focus{border-color:rgba(34,197,94,.5)}
         <textarea id="bg-content" placeholder="Full update story or announcement..." rows="6"></textarea>
       </div>
       <div class="form-field span2">
-        <label>Cover Photo URL</label>
-        <input type="url" id="bg-cover" placeholder="https://..." oninput="previewImage('bg-cover','bg-cover-prev')">
-        <div id="bg-cover-prev" style="margin-top:8px;height:100px;border-radius:6px;background:var(--raised);border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;overflow:hidden">
+        <label>Cover Photo</label>
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+          <input type="url" id="bg-cover" placeholder="https://..." oninput="previewImage('bg-cover','bg-cover-prev')" style="flex: 1;">
+          <label class="btn" style="cursor:pointer; margin:0; padding:10px 16px;">
+            Browse...
+            <input type="file" id="bg-cover-file" accept="image/*" style="display:none;" onchange="uploadImage(this, 'bg-cover')">
+          </label>
+        </div>        <div id="bg-cover-prev" style="margin-top:8px;height:100px;border-radius:6px;background:var(--raised);border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;overflow:hidden">
           <span>No image preview</span>
         </div>
       </div>

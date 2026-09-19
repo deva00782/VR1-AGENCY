@@ -260,6 +260,7 @@
           return;
         }
 
+        window.blogPosts = posts; // Store globally for modal access
         const DELAYS = ['reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3'];
         grid.innerHTML = posts.map((b, i) => {
           const cover = b.cover_url
@@ -267,7 +268,7 @@
             : '<div style="width:100%;height:100%;background:linear-gradient(135deg,#0f1a0f,#1a2e1a);display:flex;align-items:center;justify-content:center;font-size:24px">\u2726</div>';
           const dateStr = b.published_at ? new Date(b.published_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : '';
           return [
-            '<div class="update-card reveal ' + DELAYS[i % 3] + '" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column">',
+            '<div class="update-card reveal ' + DELAYS[i % 3] + '" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;" onclick="openUpdateModal(' + i + ')">',
             '  <div style="height:180px;position:relative;overflow:hidden">' + cover + '</div>',
             '  <div style="padding:24px;display:flex;flex-direction:column;flex:1">',
             '    <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--green);text-transform:uppercase;margin-bottom:8px">' + esc(dateStr || 'STUDIO UPDATE') + '</div>',
@@ -305,3 +306,42 @@
         card.style.transform = '';
       });
     });
+
+// ============================================================
+// Modal Logic for Updates
+// ============================================================
+window.openUpdateModal = function(index) {
+  if (!window.blogPosts || !window.blogPosts[index]) return;
+  const post = window.blogPosts[index];
+  
+  const modal = document.getElementById('update-modal');
+  const imgContainer = document.getElementById('modal-image-container');
+  const title = document.getElementById('modal-title');
+  const dateStr = document.getElementById('modal-date');
+  const text = document.getElementById('modal-text');
+  
+  // Populate Image
+  if (post.cover_url) {
+    imgContainer.innerHTML = '<img src="' + esc(post.cover_url) + '" alt="Cover">';
+    imgContainer.style.display = 'flex';
+  } else {
+    imgContainer.innerHTML = '';
+    imgContainer.style.display = 'none';
+  }
+  
+  // Populate Text
+  title.textContent = post.title;
+  const pd = post.published_at ? new Date(post.published_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : '';
+  dateStr.textContent = pd || 'STUDIO UPDATE';
+  text.textContent = post.content || post.excerpt || '';
+  
+  // Show Modal
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden'; // prevent scrolling background
+};
+
+window.closeUpdateModal = function() {
+  const modal = document.getElementById('update-modal');
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+};

@@ -18,7 +18,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <!-- Lenis for smooth scrolling -->
   <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
-  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/styles.css?v=2">
 </head>
 
 <body>
@@ -702,8 +702,23 @@
   </footer>
 
   </div> <!-- end #main-content -->
-  <script src="/js/main.js" defer></script>
-  <script src="/js/vr1-system.js" defer></script>
+
+  <!-- Update Modal -->
+  <div id="update-modal" class="modal">
+    <div class="modal-overlay" onclick="closeUpdateModal()"></div>
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeUpdateModal()">&times;</button>
+      <div id="modal-image-container" class="modal-image"></div>
+      <div class="modal-body">
+        <div id="modal-date" class="modal-date"></div>
+        <h2 id="modal-title" class="modal-title"></h2>
+        <div id="modal-text" class="modal-text"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/main.js?v=2" defer></script>
+  <script src="/js/vr1-system.js?v=2" defer></script>
 </body>
 
 </html>

@@ -46,6 +46,7 @@ const inquiryRoutes = require('./routes/inquiries');
 const projectRoutes = require('./routes/projects');
 const teamRoutes    = require('./routes/team');
 const blogRoutes    = require('./routes/blog');
+const uploadRoutes  = require('./routes/upload');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -120,7 +121,7 @@ app.use('/admin', helmet.contentSecurityPolicy({
 }));
 
 // ── Static: public website ────────────────────────────────────────────────────
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../frontend/public')));
 
 // ── API routes ────────────────────────────────────────────────────────────────
 app.use('/api/auth',      authRoutes);
@@ -128,10 +129,11 @@ app.use('/api/inquiries', inquiryRoutes);
 app.use('/api/projects',  projectRoutes);
 app.use('/api/team',      teamRoutes);
 app.use('/api/blog',      blogRoutes);
+app.use('/api/upload',    uploadRoutes);
 
 // ── Admin dashboard (static SPA; auth enforced by /api/auth/me on every load) ─
-app.use('/admin', express.static(path.join(__dirname, 'admin')));
-app.get('/admin/*', (_req, res) => res.sendFile(path.join(__dirname, 'admin', 'index.html')));
+app.use('/admin', express.static(path.join(__dirname, '../frontend/admin')));
+app.get('/admin/*', (_req, res) => res.sendFile(path.join(__dirname, '../frontend/admin', 'index.html')));
 
 // ── 404 ───────────────────────────────────────────────────────────────────────
 app.use((_req, res) => res.status(404).json({ error: 'Not found' }));

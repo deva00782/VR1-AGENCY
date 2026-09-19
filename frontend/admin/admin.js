@@ -86,6 +86,36 @@ function handleTitleSlug() {
 }
 
 /** Preview image URL inside drawer */
+async function uploadImage(inputElem, urlInputId) {
+  if (!inputElem.files || !inputElem.files[0]) return;
+  const file = inputElem.files[0];
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const originalText = inputElem.parentElement.childNodes[0].textContent;
+  inputElem.parentElement.childNodes[0].textContent = 'Uploading...';
+
+  try {
+    const res = await fetch('/api/upload', {
+      method: 'POST',
+      headers: { 'X-CSRF-Token': getCsrf() },
+      body: formData
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Upload failed');
+    
+    const urlInput = document.getElementById(urlInputId);
+    urlInput.value = data.url;
+    // Trigger preview
+    previewImage(urlInputId, urlInputId + '-prev');
+  } catch (err) {
+    alert(err.message);
+  } finally {
+    inputElem.parentElement.childNodes[0].textContent = 'Browse...';
+    inputElem.value = ''; // Reset file input
+  }
+}
+
 function previewImage(inputId, previewId) {
   const url = document.getElementById(inputId).value.trim();
   const box = document.getElementById(previewId);
