@@ -192,7 +192,7 @@ class VR1System {
 
   updateHeroPosition() {
     if (window.innerWidth > 992) {
-      this.systemGroup.position.set(6.5, 0, 0);
+      this.systemGroup.position.set(3.0, 0, 0);
     } else {
       this.systemGroup.position.set(0, -1, 0);
     }

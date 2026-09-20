@@ -290,15 +290,6 @@
       loadProjects();
       loadTeam();
       loadBlog();
-
-      // Active Nav Link
-      const currentPath = window.location.pathname;
-      document.querySelectorAll('.nav-links a').forEach(link => {
-        if (link.getAttribute('href') === currentPath || 
-           (currentPath === '/' && link.getAttribute('href') === '#home')) {
-          link.classList.add('active');
-        }
-      });
     });
 
     // =====================
